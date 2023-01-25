@@ -3,8 +3,38 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution1
+{    
+    // DFS: Solution with stack: WA: How to track the previous state.
+public:
+    bool isCycle(int V, vector<int> adj[])
+    {
+        vector<int> visited(V);
+        stack<int> st;
+        for (int i = 0; i < V; ++i)
+        {
+            if(!visited[i]){
+                st.push(i);
+                while(st.size()){
+                    int top = st.top();
+                    st.pop();
+
+                    if (visited[top]) return true;
+                    visited[top] = 1;
+
+                    for(auto &it: adj[top]){
+                        st.push(it);
+                    }
+                }
+            }
+        }
+        return false;
+    }
+};
+
 class Solution
 {    
+    // DFS: Solution with recursion
 public:
     bool isCycle(int V, vector<int> adj[])
     {
