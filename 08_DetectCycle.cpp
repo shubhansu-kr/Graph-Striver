@@ -4,6 +4,43 @@
 using namespace std ;
 
 class Solution {
+public:
+    bool containsCycle(vector<vector<char>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<int>> visited(m, vector<int>(n));
+
+        for (int i = 0; i < m; ++i)
+        {
+            for (int j = 0; j < n; ++j)
+            {
+                if (!visited[i][j] && dfs(grid, visited, 0, i, j)) return true;
+            }
+        }
+        
+        return false;
+    }
+
+    bool dfs(vector<vector<char>> &grid, vector<vector<int>> &visited, int state, int i, int j){
+
+        if (visited[i][j] == grid[i][j]) return true;
+        else visited[i][j] = grid[i][j];
+
+        int m = grid.size(), n = grid[0].size();
+
+        // Go down
+        if (state != 3 && i < m-1 && grid[i][j] == grid[i+1][j] && dfs(grid, visited, 1, i+1, j)) return true; 
+        // Go right
+        if (state != 4 && j < n-1 && grid[i][j] == grid[i][j+1] && dfs(grid, visited, 2, i, j+1)) return true;
+        // Go up 
+        if (state != 1 && i > 0 && grid[i][j] == grid[i-1][j] && dfs(grid, visited, 3, i-1, j)) return true;
+        // Go left
+        if (state != 2 && j > 0 && grid[i][j] == grid[i][j-1] && dfs(grid, visited, 4, i, j-1)) return true; 
+
+        return false;
+    }
+};
+
+class Solution {
     // Create Templates.
 public:
     vector<vector<int>> createAdjMatrix(vector<vector<int>> &edges, int &n){
