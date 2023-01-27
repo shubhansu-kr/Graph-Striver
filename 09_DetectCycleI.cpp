@@ -4,7 +4,46 @@
 using namespace std;
 
 class Solution1
-{    
+{   
+    // Segmentation Fault: RE
+    // BFS: Solution with Queue.
+public:
+    bool isCycle(int V, vector<vector<int>> &adj){
+        vector<int> visited(V+1);
+
+        // Run through each distinct connections.
+        for (int i = 1; i <= V; ++i)
+        {  
+            if (visited[i]) continue;
+
+            queue<int> q;
+            int prev = -1, cur;
+            q.push(i); // unvisited node
+
+            while(q.size()){
+                cur = q.front();
+                q.pop();
+
+                visited[cur] = 1;
+
+                for(auto &it: adj[cur]){
+                    if (it == prev) {
+                        // skip
+                    }
+                    else {
+                        if (visited[it]) return true;
+                        else q.push(it);
+                    }
+                }
+                prev = cur;
+            }
+        }
+        return false;
+    }
+};
+
+class Solution
+{
     // DFS: Solution with stack: WA: How to track the previous state.
 public:
     bool isCycle(int V, vector<int> adj[])
@@ -13,18 +52,18 @@ public:
         stack<int> st;
         for (int i = 0; i < V; ++i)
         {
-            if(!visited[i]){
+            if (!visited[i])
+            {
                 st.push(i);
-                while(st.size()){
+                while (st.size())
+                {
                     int top = st.top();
                     st.pop();
 
                     if (visited[top]) return true;
                     visited[top] = 1;
 
-                    for(auto &it: adj[top]){
-                        st.push(it);
-                    }
+                    for (auto &it : adj[top]) {st.push(it);}
                 }
             }
         }
@@ -33,7 +72,7 @@ public:
 };
 
 class Solution
-{    
+{
     // DFS: Solution with recursion
 public:
     bool isCycle(int V, vector<int> adj[])
@@ -41,24 +80,25 @@ public:
         vector<int> visited(V);
         for (int i = 0; i < V; ++i)
         {
-            if (!visited[i] && dfs(adj, visited, -1, i)) return true; 
+            if (!visited[i] && dfs(adj, visited, -1, i)) return true;
         }
         return false;
     }
 
-    bool dfs(vector<int> adj[], vector<int> &visited, int prev, int i){
+    bool dfs(vector<int> adj[], vector<int> &visited, int prev, int i)
+    {
         if (visited[i]) return true;
 
         visited[i] = 1;
-        for(auto &it: adj[i]) {if (it != prev && dfs(adj, visited, i, it)) return true;} 
-    
+        for (auto &it : adj[i]) { if (it != prev && dfs(adj, visited, i, it)) return true; }
+
         return false;
     }
 };
 
 class Solution
 {
-    // Wrong Answer: 
+    // Wrong Answer:
     // 4 2
     // 1 2
     // 2 3
@@ -68,25 +108,25 @@ public:
     bool isCycle(int V, vector<int> adj[])
     {
         vector<int> visited(V);
-        for (int i = 0; i < V; ++i)
-        {
-            if (!visited[i] && dfs(adj, visited, i)) return true; 
-        }
+        for (int i = 0; i < V; ++i) { if (!visited[i] && dfs(adj, visited, i)) return true; }
         return false;
     }
 
-    bool dfs(vector<int> adj[], vector<int> &visited, int i){
+    bool dfs(vector<int> adj[], vector<int> &visited, int i)
+    {
         if (visited[i]) return true;
 
         visited[i] = 1;
-        for(auto &it: adj[i]) if (dfs(adj, visited, it)) return true;
-    
+        for (auto &it : adj[i]) if (dfs(adj, visited, it)) return true;
+
         return false;
     }
 };
 
 int main()
 {
+
+    vector<vector<int>> adj;
 
     return 0;
 }
