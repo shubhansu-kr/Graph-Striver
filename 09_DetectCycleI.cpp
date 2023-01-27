@@ -3,6 +3,43 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2 {
+    // DFS solution with queue. 
+    // Use pairs to store the prev/origin node
+public: 
+    bool isCycle(int V, vector<vector<int>> &adj){
+        vector<int> visited(V+1);
+        stack<pair<int, int>> q;
+
+        // Run through each distinct connections.
+        for (int i = 1; i <= V; ++i)
+        {  
+            if (visited[i]) continue;
+
+            int cur, prev;
+            q.push({i, -1}); // unvisited node
+
+            while(q.size()){
+                cur = q.top().first;
+                prev = q.top().second;
+
+                q.pop();
+
+                visited[cur] = 1;
+
+                for(auto &it: adj[cur]){
+                    if (it == prev) {continue;}
+                    else {
+                        if (visited[it]) return true;
+                        else q.push({it, cur});
+                    }
+                }
+            }
+        }
+        return false;
+    }
+};
+
 class Solution1 {
     // BFS solution with queue. 
     // Use pairs to store the prev/origin node
