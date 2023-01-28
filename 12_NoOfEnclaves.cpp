@@ -12,7 +12,84 @@
 using namespace std ;
 
 
+class Solution1 {
+    // BFS Solution: Use Queue
+public:
+    int numEnclaves(vector<vector<int>>& grid) {
+        queue<pair<int, int>> q;
+        int m = grid.size(), n = grid[0].size();
+
+        // Pick each land cell from first and last row.
+        for (int j = 0; j < n; ++j)
+        {
+            if(grid[0][j]) {
+                q.push({0, j});
+                grid[0][j] = 0;
+            }
+
+            // Check if the last row is same as first row.
+            if (m > 1) {
+                if (grid[m-1][j]){
+                    q.push({m-1, j});
+                    grid[m-1][j] = 0;
+                }
+            }
+        }
+        
+        // Pick land cells from first and last column
+        for (int i = 1; i < m-1; ++i)
+        {
+            if (grid[i][0]) {
+                q.push({i, 0});
+                grid[i][0] = 0;
+            }
+            
+            // Check if first and last col are same.
+            if (n > 1){
+                if (grid[i][n-1]){
+                    q.push({i, n-1});
+                    grid[i][n-1] = 0;
+                }
+            }
+        }
+        
+        // While all the connected land cells are flipped
+        while(q.size()) {
+            pair<int, int> p = q.front();
+            q.pop();
+
+            int r = p.first, c = p.second, nRow, nCol;
+
+            int rowShift[] = {-1, 0, +1, 0}, colShift[] = {0, -1, 0, +1};
+
+            for (int i = 0; i < 4; ++i)
+            {
+                nRow = r + rowShift[i];
+                nCol = c + colShift[i];
+
+                // Check for valid neighbour cell.
+                if (nRow >= 0 && nCol >= 0 && nRow < m && nCol < n) {
+                    if (grid[nRow][nCol]) q.push({nRow, nCol}), grid[nRow][nCol] = 0;
+                }
+            }
+        }
+
+        // Simply count the remaining 1's
+        int ans = 0;
+        for (int i = 0; i < m; ++i)
+        {
+            for (int j = 0; j < n; ++j)
+            {
+                if (grid[i][j]) ++ans;
+            }
+        }
+        
+        return ans;
+    }
+};
+
 class Solution {
+    // DFS Solution 
 public:
     int numEnclaves(vector<vector<int>>& grid) {
         stack<pair<int, int>> st;
