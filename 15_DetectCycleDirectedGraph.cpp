@@ -4,6 +4,39 @@
 using namespace std ;
 
 class Solution {
+    // TLE
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<vector<int>> adj(numCourses+1);
+        for(auto &it: prerequisites){
+            adj[it[1]].emplace_back(it[0]);
+        }
+
+        unordered_set<int> _set;
+        vector<int> vis(numCourses);
+        for (int i = 0; i < numCourses; ++i)
+        {
+            if (!vis[i] && !dfs(numCourses, adj, vis, _set, i)) return false;
+        }
+        return true;
+    }
+
+    bool dfs(int &n, vector<vector<int>> &adj, vector<int> &vis, unordered_set<int> &_set, int &i){
+        if(vis[i]) return true;
+
+        if (_set.count(i)) return false;
+        else _set.insert(i);
+
+        for(auto &it: adj[i]){
+            if(!dfs(n, adj, vis, _set, it)) return false;
+        }
+
+        _set.erase(i); 
+        return true;
+    }
+};
+
+class Solution {
     // TLE 
 
     // 100 
