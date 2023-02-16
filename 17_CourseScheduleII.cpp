@@ -4,6 +4,7 @@
 using namespace std ;
 
 class Solution {
+    // DFS Topological sort
 public:
 
     vector<vector<int>> createAdjList(vector<vector<int>> &edges, int &n){
